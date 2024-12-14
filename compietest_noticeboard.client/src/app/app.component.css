@@ -9,10 +9,38 @@
   height: 100vh;
   width: 80%;
   margin: auto;
+  font-family: Arial;
+  font-size: 14px;
 }
 
-.title, .content, .create-date, .update-date {
+.title,
+.content,
+.create-date,
+.update-date {
   text-align: left;
+}
+
+.noticeBoardNav {
+  text-align: right;
+}
+
+.delimiter {
+  border-left: 2px solid #ccc;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.spanRemove:hover,
+.spanChange:hover {
+  text-decoration: underline;
+}
+
+.spanRemove,
+.spanChange {
+  color: #0000ff;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .newItemDiv {

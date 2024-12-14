@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface NoticeBoard {
+  id: number;
   title: string;
   content: string;
   createDate: string;

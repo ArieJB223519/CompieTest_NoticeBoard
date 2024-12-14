@@ -28,7 +28,7 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should retrieve weather forecasts from the server', () => {
+  it('should retrieve weather notice board from the server', () => {
     const mockNoticeBoards = [
       { title: 'ku-ku', content: 'fdsdf', createDate: '2024-12-13', updateDate: '2024-12-13' },
       { title: 'ku-ku-1', content: 'fdsdf-1', createDate: '2024-12-13', updateDate: '2024-12-13' }

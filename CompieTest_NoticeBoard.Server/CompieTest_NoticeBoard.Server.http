@@ -1,6 +1,6 @@
 @CompieTest_NoticeBoard.Server_HostAddress = http://localhost:5198
 
-GET {{CompieTest_NoticeBoard.Server_HostAddress}}/NoticeBoard/ //weatherforecast/
+GET {{CompieTest_NoticeBoard.Server_HostAddress}}/NoticeBoard/ 
 Accept: application/json
 
 ###

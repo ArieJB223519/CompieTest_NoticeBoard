@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\compietest_noticeboard.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:57476</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://127.0.0.1:57476</SpaProxyServerUrl>
+    <!--SpaProxyServerUrl>https://localhost:57476</SpaProxyServerUrl-->
   </PropertyGroup>
 
   <ItemGroup>

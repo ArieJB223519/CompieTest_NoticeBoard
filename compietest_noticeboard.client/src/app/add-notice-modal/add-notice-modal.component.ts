@@ -30,6 +30,7 @@ export class AddNoticeModalComponent {
     private dialogRef: MatDialogRef<AddNoticeModalComponent>
   ) {
     this.noticeBoardForm = this.fb.group({
+      id: 0,
       title: ['', Validators.required],
       content: ['', Validators.required],
       createDate: [new Date().toISOString().split('T')[0], Validators.required],

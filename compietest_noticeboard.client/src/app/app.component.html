@@ -9,6 +9,7 @@
     <div class="notice-board-container">
       <p *ngIf="!noticeBoards"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
       <div *ngFor="let noticeBoard of noticeBoards" class="notice-board-item">
+        <div class="noticeBoardNav"><span class="spanChange">change</span> <span class="delimiter"></span> <span class="spanRemove">remove</span></div>
         <div class="title">{{ noticeBoard.title }}</div>
         <div class="content">{{ noticeBoard.content }}</div>
         <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yyyy' }}</div>
@@ -18,5 +19,3 @@
   </div>
   <div class="footer">Created by Arie Ataev-Lanzman, 054-5642009</div>
 </div>
-
-
