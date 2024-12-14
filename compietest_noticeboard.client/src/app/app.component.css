@@ -1,14 +1,86 @@
-﻿:host {
+:host {
     max-width: 1280px;
-    padding: 2rem;
     text-align: center;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+#noticeBoardsMain {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 80%;
+  margin: auto;
 }
 
-table {
-    margin: 0 auto;
+.title, .content, .create-date, .update-date {
+  text-align: left;
+}
+
+.newItemDiv {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.header {
+  flex: 0 0 auto;
+  text-align: left;
+  border-bottom: 1px solid #000;
+}
+
+.content {
+  flex: 1 1 auto; 
+  overflow-y: auto; 
+}
+
+.footer {
+  flex: 0 0 auto;
+  text-align: right;
+  border-top: 1px solid #000;
+}
+
+
+.notice-board-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.notice-board-item {
+  border: 1px solid #ccc;
+  padding: 16px;
+  flex: 1 1 calc(25% - 32px); /* 4 items per row, with gaps accounted for */
+  box-sizing: border-box;
+}
+
+  .notice-board-item .title {
+    font-weight: bold;
+  }
+
+  .notice-board-item .content {
+    margin-top: 8px;
+  }
+
+  .notice-board-item .create-date,
+  .notice-board-item .update-date {
+    margin-top: 4px;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+@media (max-width: 1024px) {
+  .notice-board-item {
+    flex: 1 1 calc(33.33% - 32px); /* 3 items per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .notice-board-item {
+    flex: 1 1 calc(50% - 32px); /* 2 items per row */
+  }
+}
+
+@media (max-width: 480px) {
+  .notice-board-item {
+    flex: 1 1 100%; /* 1 item per row */
+  }
 }

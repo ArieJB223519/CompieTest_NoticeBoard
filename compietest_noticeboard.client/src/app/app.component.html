@@ -1,26 +1,22 @@
-<h1 id="tableLabel">Notice Board</h1>
+<div id="noticeBoardsMain">
+  <div class="header">
+    <h1 id="tableLabel">Notice Board</h1>
+  </div>
+  <div class="content">
+    <div class="newItemDiv">
+      <button mat-button (click)="openAddNoticeModal()">Add New Item</button>
+    </div>
+    <div class="notice-board-container">
+      <p *ngIf="!noticeBoards"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
+      <div *ngFor="let noticeBoard of noticeBoards" class="notice-board-item">
+        <div class="title">{{ noticeBoard.title }}</div>
+        <div class="content">{{ noticeBoard.content }}</div>
+        <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yyyy' }}</div>
+        <div class="update-date">Updated: {{ noticeBoard.updateDate | date:'dd.MM.yyyy' }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">Created by Arie Ataev-Lanzman, 054-5642009</div>
+</div>
 
-<p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!noticeBoards"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
-<!--<button (click)="openAddNoticeModal()">Add New Item</button>-->
-<button mat-button (click)="openAddNoticeModal()">Add New Item</button>
-
-<table *ngIf="noticeBoards">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Content</th>
-      <th>Create Date</th>
-      <th>Update Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let noticeBoard of noticeBoards">
-      <td>{{ noticeBoard.title }}</td>
-      <td>{{ noticeBoard.content }}</td>
-      <td>{{ noticeBoard.createDate }}</td>
-      <td>{{ noticeBoard.updateDate }}</td>
-    </tr>
-  </tbody>
-</table>
