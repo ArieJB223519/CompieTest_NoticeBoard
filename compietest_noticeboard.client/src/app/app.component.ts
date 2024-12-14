@@ -1,38 +1,44 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { MatDialog } from '@angular/material/dialog';
+import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
+import { NoticeBoardService, NoticeBoard } from './notice-board.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  standalone: false,
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  public noticeBoards: NoticeBoard[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private noticeBoardService: NoticeBoardService, private dialog: MatDialog) { }
 
   ngOnInit() {
-    this.getForecasts();
+    console.log('ngOnInit called');
+    this.getNoticeBoards();
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
+  getNoticeBoards() {
+    this.noticeBoardService.getNoticeBoardsAll().subscribe(
+      (result: NoticeBoard[]) => {
+        this.noticeBoards = result;
       },
-      (error) => {
+      (error: any) => {
         console.error(error);
       }
     );
   }
 
-  title = 'compietest_noticeboard.client';
+  openAddNoticeModal() {
+    const dialogRef = this.dialog.open(AddNoticeModalComponent);
+
+    dialogRef.afterClosed().subscribe((result: NoticeBoard) => {
+      if (result) {
+        this.noticeBoards.push(result);
+      }
+    });
+  }
 }

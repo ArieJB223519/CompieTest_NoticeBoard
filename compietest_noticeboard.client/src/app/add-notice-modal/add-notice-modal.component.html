@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Add New Notice</h2>
+<mat-dialog-content [formGroup]="noticeBoardForm">
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Content</mat-label>
+    <textarea matInput formControlName="content"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="noticeBoardForm.invalid">Add</button>
+</mat-dialog-actions>
