@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
 import { ChangeNoticeModalComponent } from './change-notice-modal/change-notice-modal.component';
+import { DeleteNoticeConfirmComponent } from './delete-notice-confirm/delete-notice-confirm.component';
 import { NoticeBoardService, NoticeBoard } from './notice-board.service';
 import { CommonModule } from '@angular/common';
 
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
       }
     );
   }
-
+ 
   openChangeNoticeModal(notice: NoticeBoard): void {
     const dialogRef = this.dialog.open(ChangeNoticeModalComponent, {
       data: notice
@@ -54,6 +55,22 @@ export class AppComponent implements OnInit {
       (result: NoticeBoard[]) => {
         if (result) {
           this.noticeBoards = result;
+        }
+      }
+    );
+  }
+
+  openDeleteNoticeModal(id: number): void {
+    const dialogRef = this.dialog.open(DeleteNoticeConfirmComponent, {
+      data: { id: id }
+    });
+
+    dialogRef.componentInstance.noticeId = id;
+
+    dialogRef.afterClosed().subscribe(
+      (result: boolean) => {
+        if (result) {
+          this.noticeBoards = this.noticeBoards.filter(notice => notice.id !== id);
         }
       }
     );

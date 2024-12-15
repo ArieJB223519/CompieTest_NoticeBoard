@@ -13,6 +13,7 @@ export interface NoticeBoard {
 @Injectable({
   providedIn: 'root'
 })
+
 export class NoticeBoardService {
   private baseUrl = 'https://127.0.0.1:57476/noticeBoard/';
   constructor(private http: HttpClient) { }
@@ -34,5 +35,9 @@ export class NoticeBoardService {
 
   getNoticeBoardsAll(): Observable<NoticeBoard[]> {
     return this.http.get<NoticeBoard[]>(this.baseUrl);
+  }
+
+  deleteNotice(id: number): Observable<void> {
+    return this.http.delete<void>(this.baseUrl + id + "/");
   }
 }
