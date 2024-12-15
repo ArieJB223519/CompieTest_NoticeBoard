@@ -24,6 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class ChangeNoticeModalComponent {
   noticeBoardForm: FormGroup;
+  originalTitle: string;
+  originalContent: string;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +34,9 @@ export class ChangeNoticeModalComponent {
     private dialogRef: MatDialogRef<ChangeNoticeModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.originalTitle = data.title;
+    this.originalContent = data.content;
+
     this.noticeBoardForm = this.fb.group({
       id: [data.id],
       title: [data.title, Validators.required],
@@ -46,16 +52,44 @@ export class ChangeNoticeModalComponent {
 
   onSubmit(): void {
     if (this.noticeBoardForm.valid) {
+      this.isLoading = true;
+
       const updatedItem: NoticeBoard = this.noticeBoardForm.value;
-      this.noticeBoardService.updateNotice(updatedItem).subscribe(
-        response => {
-          console.log('Item updated successfully', response);
-          this.dialogRef.close(response);
-        },
-        error => {
-          console.error('Error updating item', error);
-        }
-      );
+      const patches = [];
+
+      if (updatedItem.title !== this.originalTitle) {
+        patches.push({ op: 'replace', path: '/title', value: updatedItem.title });
+      }
+
+      if (updatedItem.content !== this.originalContent) {
+        patches.push({ op: 'replace', path: '/content', value: updatedItem.content });
+      }
+
+      if (patches.length === 2) {
+        this.noticeBoardService.updateNotice(updatedItem).subscribe(
+          response => {
+            console.log('Item updated successfully with method PUT', response);
+            this.dialogRef.close(response);
+          },
+          error => {
+            console.error('Error updating item', error);
+          }
+        ).add(() => {
+          this.isLoading = false;
+        });
+      } else if (patches.length === 1) {
+        this.noticeBoardService.patchNotice(updatedItem).subscribe(
+          response => {
+            console.log('Item patched successfully with method PATCH', response);
+            this.dialogRef.close(response);
+          },
+          error => {
+            console.error('Error patching item', error);
+          }
+        ).add(() => {
+          this.isLoading = false;
+        });
+      }
     }
   }
 }

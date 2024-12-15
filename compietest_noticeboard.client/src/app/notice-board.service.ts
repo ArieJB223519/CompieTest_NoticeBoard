@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface NoticeBoard {
@@ -14,11 +14,18 @@ export interface NoticeBoard {
   providedIn: 'root'
 })
 export class NoticeBoardService {
-  private baseUrl = 'https://127.0.0.1:57476/noticeBoard';
+  private baseUrl = 'https://127.0.0.1:57476/noticeBoard/';
   constructor(private http: HttpClient) { }
 
   updateNotice(item: NoticeBoard): Observable<NoticeBoard> {
-    return this.http.put<NoticeBoard>(this.baseUrl + "/" + item.id, item);
+    return this.http.put<NoticeBoard>(this.baseUrl + item.id + "/", item);
+  }
+
+  patchNotice(item: NoticeBoard): Observable<NoticeBoard> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json-patch+json' }),
+      result = this.http.patch<NoticeBoard>(this.baseUrl + item.id + "/", item);
+
+    return result;
   }
 
   addNotice(item: NoticeBoard): Observable<NoticeBoard> {

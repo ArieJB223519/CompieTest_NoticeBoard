@@ -35,25 +35,14 @@ export class AppComponent implements OnInit {
 
   openChangeNoticeModal(notice: NoticeBoard): void {
     const dialogRef = this.dialog.open(ChangeNoticeModalComponent, {
-      width: '250px',
       data: notice
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.updateNotice(result);
-      }
-    });
-  }
-
-  updateNotice(updatedNotice: NoticeBoard): void {
-    this.noticeBoardService.updateNotice(updatedNotice).subscribe(
-      response => {
-        console.log('Notice updated successfully', response);
-        this.getNoticeBoards(); 
-      },
-      error => {
-        console.error('Error updating notice', error);
+    dialogRef.afterClosed().subscribe(
+      (result: NoticeBoard[]) => {
+        if (result) {
+          this.noticeBoards = result;
+        }
       }
     );
   }
@@ -61,10 +50,12 @@ export class AppComponent implements OnInit {
   openAddNoticeModal() {
     const dialogRef = this.dialog.open(AddNoticeModalComponent);
 
-    dialogRef.afterClosed().subscribe((result: NoticeBoard) => {
-      if (result) {
-        this.noticeBoards.push(result);
+    dialogRef.afterClosed().subscribe(
+      (result: NoticeBoard[]) => {
+        if (result) {
+          this.noticeBoards = result;
+        }
       }
-    });
+    );
   }
 }

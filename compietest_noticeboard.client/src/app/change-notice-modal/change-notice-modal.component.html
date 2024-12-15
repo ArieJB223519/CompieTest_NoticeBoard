@@ -15,7 +15,5 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onSubmit()">Save</button>
+  <button mat-button (click)="onSubmit()" [disabled]="isLoading">Save</button>
 </mat-dialog-actions>
-
-
