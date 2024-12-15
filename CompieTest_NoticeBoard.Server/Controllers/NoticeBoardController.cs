@@ -38,15 +38,17 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 }
 
                 var existingItem = noticeBoardItems.Items.FirstOrDefault(i => i.Id == id);
+
                 if (existingItem == null)
                 {
                     return NotFound("Item not found.");
                 }
 
-                if (updatedItem.Title != null && updatedItem.Content != null)
+                if (updatedItem.Title != null && updatedItem.Content != null && updatedItem.UpdateDate != null)
                 {
                     existingItem.Title = updatedItem.Title;
                     existingItem.Content = updatedItem.Content;
+                    existingItem.UpdateDate = updatedItem.UpdateDate;
                 }
                 else if (updatedItem.Title != null)
                 {
@@ -55,6 +57,10 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 else if (updatedItem.Content != null)
                 {
                     existingItem.Content = updatedItem.Content;
+                }
+                else if (updatedItem.UpdateDate != null)
+                {
+                    existingItem.UpdateDate = updatedItem.UpdateDate;
                 }
 
                 string updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);

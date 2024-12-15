@@ -10,12 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NoticeBoardService } from './notice-board.service';
-//import { ChangeNoticeComponent } from './change-notice/change-notice.component';
 
 @NgModule({
-  declarations: [
-    //ChangeNoticeComponent
-  ],
+  declarations: [],
   imports: [
     BrowserModule,
     ReactiveFormsModule,

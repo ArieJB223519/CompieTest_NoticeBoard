@@ -57,26 +57,35 @@
 
 .content {
   flex: 1 1 auto; 
-  overflow-y: auto; 
+  overflow-y: auto;
+  padding-bottom: 10px;
 }
 
 .footer {
   flex: 0 0 auto;
   text-align: right;
   border-top: 1px solid #000;
+  font-size: 12px;
+  padding-bottom: 10px;
 }
+  .footer a {
+    text-decoration: none;
+  }
 
+  .footer a:hover {
+      text-decoration: underline;
+  }
 
-.notice-board-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
+    .notice-board-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
 .notice-board-item {
   border: 1px solid #ccc;
   padding: 16px;
-  flex: 1 1 calc(25% - 32px); /* 4 items per row, with gaps accounted for */
+  flex: 1 1 calc(25% - 32px); /* 4 items per row */
   box-sizing: border-box;
 }
 

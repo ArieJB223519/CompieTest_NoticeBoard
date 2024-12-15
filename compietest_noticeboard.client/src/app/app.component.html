@@ -2,20 +2,20 @@
   <div class="header">
     <h1 id="tableLabel">Notice Board</h1>
   </div>
+  <div class="newItemDiv">
+    <button mat-button (click)="openAddNoticeModal()">Add New Item</button>
+  </div>
   <div class="content">
-    <div class="newItemDiv">
-      <button mat-button (click)="openAddNoticeModal()">Add New Item</button>
-    </div>
     <div class="notice-board-container">
       <p *ngIf="!noticeBoards"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
       <div *ngFor="let noticeBoard of noticeBoards" class="notice-board-item">
-        <div class="noticeBoardNav"><span class="spanChange">change</span> <span class="delimiter"></span> <span class="spanRemove">remove</span></div>
+        <div class="noticeBoardNav"><span class="spanChange" (click)="openChangeNoticeModal(noticeBoard)">change</span> <span class="delimiter"></span> <span class="spanRemove">remove</span></div>
         <div class="title">{{ noticeBoard.title }}</div>
         <div class="content">{{ noticeBoard.content }}</div>
-        <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yyyy' }}</div>
-        <div class="update-date">Updated: {{ noticeBoard.updateDate | date:'dd.MM.yyyy' }}</div>
+        <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yy HH:mm' }}</div>
+        <div class="update-date">Updated: {{ noticeBoard.updateDate | date:'dd.MM.yy HH:mm' }}</div>
       </div>
     </div>
   </div>
-  <div class="footer">Created by Arie Ataev-Lanzman, 054-5642009</div>
+  <div class="footer">Created by <a href="mailto:arie.ataev@gmail.com">Arie Ataev-Lanzman</a>, 054-5642009</div>
 </div>

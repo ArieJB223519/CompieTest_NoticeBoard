@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NoticeBoardService, NoticeBoard } from '../notice-board.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,9 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-add-notice-modal',
-  templateUrl: './add-notice-modal.component.html',
-  styleUrls: ['./add-notice-modal.component.css'],
+  selector: 'app-change-notice-modal',
+  templateUrl: './change-notice-modal.component.html',
+  styleUrls: ['./change-notice-modal.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -22,20 +22,21 @@ import { MatButtonModule } from '@angular/material/button';
   ]
 })
 
-export class AddNoticeModalComponent {
+export class ChangeNoticeModalComponent {
   noticeBoardForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private noticeBoardService: NoticeBoardService,
-    private dialogRef: MatDialogRef<AddNoticeModalComponent>
+    private dialogRef: MatDialogRef<ChangeNoticeModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.noticeBoardForm = this.fb.group({
-      id: 0,
-      title: ['', Validators.required],
-      content: ['', Validators.required],
-      createDate: [new Date().toISOString().split('T')[0], Validators.required],
-      updateDate: [new Date().toISOString().split('T')[0], Validators.required]
+      id: [data.id],
+      title: [data.title, Validators.required],
+      content: [data.content, Validators.required],
+      createDate: [data.createDate, Validators.required],
+      updateDate: [new Date().toISOString(), Validators.required]
     });
   }
 
@@ -45,14 +46,14 @@ export class AddNoticeModalComponent {
 
   onSubmit(): void {
     if (this.noticeBoardForm.valid) {
-      const newItem: NoticeBoard = this.noticeBoardForm.value;
-      this.noticeBoardService.addNotice(newItem).subscribe(
+      const updatedItem: NoticeBoard = this.noticeBoardForm.value;
+      this.noticeBoardService.updateNotice(updatedItem).subscribe(
         response => {
-          console.log('Item added successfully', response);
+          console.log('Item updated successfully', response);
           this.dialogRef.close(response);
         },
         error => {
-          console.error('Error adding item', error);
+          console.error('Error updating item', error);
         }
       );
     }

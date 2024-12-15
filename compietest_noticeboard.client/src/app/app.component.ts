@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
+import { ChangeNoticeModalComponent } from './change-notice-modal/change-notice-modal.component';
 import { NoticeBoardService, NoticeBoard } from './notice-board.service';
 import { CommonModule } from '@angular/common';
 
@@ -28,6 +29,31 @@ export class AppComponent implements OnInit {
       },
       (error: any) => {
         console.error(error);
+      }
+    );
+  }
+
+  openChangeNoticeModal(notice: NoticeBoard): void {
+    const dialogRef = this.dialog.open(ChangeNoticeModalComponent, {
+      width: '250px',
+      data: notice
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateNotice(result);
+      }
+    });
+  }
+
+  updateNotice(updatedNotice: NoticeBoard): void {
+    this.noticeBoardService.updateNotice(updatedNotice).subscribe(
+      response => {
+        console.log('Notice updated successfully', response);
+        this.getNoticeBoards(); 
+      },
+      error => {
+        console.error('Error updating notice', error);
       }
     );
   }

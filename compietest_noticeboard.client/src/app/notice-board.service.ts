@@ -14,13 +14,18 @@ export interface NoticeBoard {
   providedIn: 'root'
 })
 export class NoticeBoardService {
+  private baseUrl = 'https://127.0.0.1:57476/noticeBoard';
   constructor(private http: HttpClient) { }
 
-  getNoticeBoardsAll(): Observable<NoticeBoard[]> {
-    return this.http.get<NoticeBoard[]>('/noticeBoard');
+  updateNotice(item: NoticeBoard): Observable<NoticeBoard> {
+    return this.http.put<NoticeBoard>(this.baseUrl + "/" + item.id, item);
   }
 
   addNotice(item: NoticeBoard): Observable<NoticeBoard> {
-    return this.http.post<NoticeBoard>('/noticeBoard', item);
+    return this.http.post<NoticeBoard>(this.baseUrl, item);
+  }
+
+  getNoticeBoardsAll(): Observable<NoticeBoard[]> {
+    return this.http.get<NoticeBoard[]>(this.baseUrl);
   }
 }
