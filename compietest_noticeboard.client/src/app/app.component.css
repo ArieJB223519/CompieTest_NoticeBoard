@@ -1,12 +1,33 @@
 :host {
-    max-width: 1280px;
-    text-align: center;
+  max-width: 1280px;
+  text-align: center;
+}
+
+.content {
+  overflow-y: auto;
+  max-height: 80px;
 }
 
 .searchNotices input {
   width: 500px;
   margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
+
+.newItemDiv button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  .newItemDiv button:hover {
+    background-color: #0056b3;
+  }
 
 .imageUrl img {
   max-width: 100%;
@@ -15,7 +36,7 @@
   margin: 0 auto;
 }
 
-  #noticeBoardsMain {
+#noticeBoardsMain {
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -67,8 +88,8 @@
   border-bottom: 1px solid #000;
 }
 
-.content {
-  flex: 1 1 auto; 
+.contentDiv {
+  flex: 1 1 auto;
   overflow-y: auto;
   padding-bottom: 10px;
 }
@@ -80,19 +101,20 @@
   font-size: 12px;
   padding-bottom: 10px;
 }
+
   .footer a {
     text-decoration: none;
   }
 
-  .footer a:hover {
+    .footer a:hover {
       text-decoration: underline;
-  }
-
-    .notice-board-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
     }
+
+.notice-board-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
 
 .notice-board-item {
   border: 1px solid #ccc;
@@ -102,7 +124,10 @@
 }
 
   .notice-board-item .title {
+    margin-top: 10px;
     font-weight: bold;
+    font-size: 17px;
+    color: #777777;
   }
 
   .notice-board-item .content {
@@ -111,8 +136,7 @@
 
   .notice-board-item .create-date,
   .notice-board-item .update-date {
-    margin-top: 4px;
-    font-size: 0.9em;
+    margin-top: 10px;
     color: #666;
   }
 
