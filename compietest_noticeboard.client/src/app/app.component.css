@@ -1,6 +1,13 @@
 :host {
   max-width: 1280px;
   text-align: center;
+  background-color: red;
+}
+
+.searchNotices input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: initial; 
 }
 
 .content {
@@ -9,10 +16,10 @@
 }
 
 .searchNotices input {
-  width: 500px;
-  margin-bottom: 10px;
+  width: 70%;
+  margin-bottom: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #000;
   border-radius: 5px;
 }
 
@@ -42,7 +49,7 @@
   height: 100vh;
   width: 80%;
   margin: auto;
-  font-family: Arial;
+  font-family: Roboto, "Helvetica Neue", sans-serif, Arial;
   font-size: 14px;
 }
 
@@ -86,6 +93,7 @@
   flex: 0 0 auto;
   text-align: left;
   border-bottom: 1px solid #000;
+  color: #666666;
 }
 
 .contentDiv {
@@ -99,6 +107,7 @@
   text-align: right;
   border-top: 1px solid #000;
   font-size: 12px;
+  margin-top: 10px;
   padding-bottom: 10px;
 }
 
@@ -117,7 +126,7 @@
 }
 
 .notice-board-item {
-  border: 1px solid #ccc;
+  border: 1px solid #000;
   padding: 16px;
   flex: 1 1 calc(25% - 32px); /* 4 items per row */
   box-sizing: border-box;
@@ -128,16 +137,20 @@
     font-weight: bold;
     font-size: 17px;
     color: #777777;
+    margin-bottom: 3px;
   }
 
   .notice-board-item .content {
     margin-top: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #777;
   }
 
   .notice-board-item .create-date,
   .notice-board-item .update-date {
-    margin-top: 10px;
+    margin-top: 3px;
     color: #666;
+    font-size: 13px;
   }
 
 @media (max-width: 1024px) {

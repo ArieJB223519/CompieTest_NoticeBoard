@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
 import { ChangeNoticeModalComponent } from './change-notice-modal/change-notice-modal.component';
@@ -13,10 +13,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   public noticeBoards: NoticeBoard[] = [];
   public filteredNoticeBoards: NoticeBoard[] = [];
   public searchQuery: string = '';
+
+  @ViewChild('searchInput') searchInputElement!: ElementRef;
 
   constructor(
     private noticeBoardService: NoticeBoardService,
@@ -27,6 +29,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     console.log('ngOnInit called');
     this.getNoticeBoards();
+  }
+
+  ngAfterViewInit() {
+    this.searchInputElement.nativeElement.focus();
   }
 
   getNoticeBoards() {
@@ -44,7 +50,8 @@ export class AppComponent implements OnInit {
 
   openChangeNoticeModal(notice: NoticeBoard): void {
     const dialogRef = this.dialog.open(ChangeNoticeModalComponent, {
-      data: notice
+      data: notice,
+      width: "800px"
     });
 
     dialogRef.afterClosed().subscribe(
@@ -59,7 +66,9 @@ export class AppComponent implements OnInit {
   }
 
   openAddNoticeModal() {
-    const dialogRef = this.dialog.open(AddNoticeModalComponent);
+    const dialogRef = this.dialog.open(AddNoticeModalComponent, {
+      width: "800px"
+    });
 
     dialogRef.afterClosed().subscribe(
       (result: NoticeBoard[]) => {
@@ -74,7 +83,8 @@ export class AppComponent implements OnInit {
 
   openDeleteNoticeModal(id: number): void {
     const dialogRef = this.dialog.open(DeleteNoticeConfirmComponent, {
-      data: { id: id }
+      data: { id: id },
+      width: "800px"
     });
 
     dialogRef.componentInstance.noticeId = id;

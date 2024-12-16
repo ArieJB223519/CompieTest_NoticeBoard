@@ -11,26 +11,26 @@
     {
       "Id": 2,
       "Title": "The plan is simple",
-      "Content": "I’m on the Eastern & Oriental Express, a Belmond train that quite literally goes bump in the night. Relaunched and revamped in February 2024 after a pandemic-induced four-year hiatus, the Venice Simplon-Orient-Express’s Southeast Asian sister has returned to ply the jungles of Malaysia. And once it gets going, it rarely stops moving.",
+      "Content": "I’m on the Eastern & Oriental Express, a Belmond train that quite literally goes bump in the night. ",
       "ImageUrl": "istockphoto-1255683032-612x612.jpg",
       "CreateDate": "2024-12-13T00:00:00",
-      "UpdateDate": "2024-12-16T08:18:51.702Z"
+      "UpdateDate": "2024-12-16T10:40:58.062Z"
     },
     {
       "Id": 3,
       "Title": "Oceanic mystery",
-      "Content": "Finding the current’s starting point is crucial, because scientists do know where it ends up. The IFSJ—a deep, dense-water current—starts somewhere in the Nordic seas and flows south and east, eventually hurtling through the Faroe Bank Channel, a gap in the undersea ridge that runs from Greenland to Scotland. From there, the waters feed into the lower limb of the Atlantic meridional overturning circulation, or AMOC.",
+      "Content": "Finding the current’s starting point  is crucial, because scientists do know where it ends up. The IFSJ—a deep, dense-water current—starts somewhere in the Nordic seas and flows south and east, eventually hurtling through the Faroe Bank Channel, a gap in the undersea ridge that runs from Greenland to Scotland. From there, the waters feed into the lower limb of the Atlantic meridional overturning circulation, or AMOC.",
       "ImageUrl": "istockphoto-1165211595-612x612.jpg",
       "CreateDate": "2024-12-14T00:00:00",
-      "UpdateDate": "2024-12-16T08:25:09.958Z"
+      "UpdateDate": "2024-12-16T11:32:06.434Z"
     },
     {
-      "Id": 10,
-      "Title": "Going on a northern lights trip?",
-      "Content": "For many travelers, seeing the northern lights dancing across the night sky is a lifelong dream. While these spectacular displays have occurred in midlatitudes, the best place to see them is in the auroral oval, an area that encompasses northern regions, including parts of Alaska, Canada, and Scandinavia. ",
-      "ImageUrl": "gettyimages-1189325217-612x612.jpg",
-      "CreateDate": "2024-12-14T20:11:55.0277509Z",
-      "UpdateDate": "2024-12-16T08:14:18.575Z"
+      "Id": 4,
+      "Title": "I am a Full Stack Software Developer",
+      "Content": "specializing in data implementation with over 20 years of experience in the government, public, and private sectors. My expertise includes managing, updating, searching, filtering, and presenting complex information using reports, web pages, and files from various sources, such as databases, web documents, files, and cloud services with SQL, ETL, and REST APIs. I have handled large amounts of data in the fields of agricultural produce, human resources, health services, marketing, and commerce. I hold a Master's degree in Linguistics and live in Harish/Nesher, Haifa District",
+      "ImageUrl": "Flows.jpg",
+      "CreateDate": "2024-12-16T12:22:09.2874309Z",
+      "UpdateDate": "2024-12-16T12:23:03.924Z"
     }
   ]
 }

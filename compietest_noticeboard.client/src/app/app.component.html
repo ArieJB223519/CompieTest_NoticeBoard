@@ -1,12 +1,12 @@
 <div id="noticeBoardsMain">
   <div class="header">
-    <h1 id="tableLabel">Basic Notice Board</h1>
+    <h1 id="tableLabel">Simple Info Board - built with ASP.NET CORE and Angular</h1> 
   </div>
   <div class="newItemDiv">
-    <button mat-button (click)="openAddNoticeModal()">Add New Item</button>
+    <button mat-button (click)="openAddNoticeModal()">Add New Info</button>
   </div>
   <div class="searchNotices">
-    <input type="text" placeholder="Search - min 3 char + Enter" (keydown)="handleKeyDown($event)" />
+    <input type="text" #searchInput placeholder="Search [min 3 characters + Enter]" (keydown)="handleKeyDown($event)" />
   </div>
   <div class="contentDiv">
     <div class="notice-board-container">
@@ -23,5 +23,5 @@
       </div>
     </div>
   </div>
-  <div class="footer">Created by <a href="mailto:arie.ataev@gmail.com">Arie Ataev-Lanzman</a>, 054-5642009</div>
+  <div class="footer"><a href="mailto:arie.ataev@gmail.com">Arie Ataev-Lanzman</a>, 054-5642009</div>
 </div>
