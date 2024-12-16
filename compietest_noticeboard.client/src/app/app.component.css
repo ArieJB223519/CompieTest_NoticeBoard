@@ -3,7 +3,19 @@
     text-align: center;
 }
 
-#noticeBoardsMain {
+.searchNotices input {
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+.imageUrl img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+  #noticeBoardsMain {
   display: flex;
   flex-direction: column;
   height: 100vh;

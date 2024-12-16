@@ -5,12 +5,18 @@
   <div class="newItemDiv">
     <button mat-button (click)="openAddNoticeModal()">Add New Item</button>
   </div>
+  <div class="searchNotices">
+    <input type="text" placeholder="Search - min 3 char + Enter" (keydown)="handleKeyDown($event)" />
+  </div>
   <div class="content">
     <div class="notice-board-container">
       <p *ngIf="!noticeBoards"><em>Loading... Please refresh once the ASP.NET backend has started.</em></p>
-      <div *ngFor="let noticeBoard of noticeBoards" class="notice-board-item">
+      <div *ngFor="let noticeBoard of filteredNoticeBoards" class="notice-board-item">
         <div class="noticeBoardNav"><span class="spanChange" (click)="openChangeNoticeModal(noticeBoard)">change</span> <span class="delimiter"></span> <span class="spanRemove" (click)="openDeleteNoticeModal(noticeBoard.id)">remove</span></div>
         <div class="title">{{ noticeBoard.title }}</div>
+        <div class="imageUrl" *ngIf="noticeBoard.imageUrl">
+          <img [src]="'https://localhost:7225/images/' + noticeBoard.imageUrl" [alt]="'image for ' + noticeBoard.title" />
+        </div>
         <div class="content">{{ noticeBoard.content }}</div>
         <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yy HH:mm' }}</div>
         <div class="update-date">Updated: {{ noticeBoard.updateDate | date:'dd.MM.yy HH:mm' }}</div>

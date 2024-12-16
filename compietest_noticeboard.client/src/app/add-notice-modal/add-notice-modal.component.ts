@@ -24,6 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class AddNoticeModalComponent {
   noticeBoardForm: FormGroup;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -34,16 +35,41 @@ export class AddNoticeModalComponent {
       id: 0,
       title: ['', Validators.required],
       content: ['', Validators.required],
+
       createDate: [new Date().toISOString().split('T')[0], Validators.required],
       updateDate: [new Date().toISOString().split('T')[0], Validators.required]
     });
   }
 
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] || null;
+  }
   onCancel(): void {
     this.dialogRef.close();
   }
 
   onSubmit(): void {
+    if (this.noticeBoardForm.valid && this.selectedFile) {
+      const formData = new FormData();
+      formData.append('title', this.noticeBoardForm.get('title')?.value);
+      formData.append('content', this.noticeBoardForm.get('content')?.value);
+      formData.append('image', this.selectedFile);
+
+      this.noticeBoardService.addNotice(formData).subscribe(
+        response => {
+          console.log('Item added successfully', response);
+          this.dialogRef.close(response);
+        },
+        error => {
+          console.error('Error adding item', error);
+        }
+      );
+    }
+  
+
+  
+
+    /*
     if (this.noticeBoardForm.valid) {
       const newItem: NoticeBoard = this.noticeBoardForm.value;
       this.noticeBoardService.addNotice(newItem).subscribe(
@@ -56,5 +82,6 @@ export class AddNoticeModalComponent {
         }
       );
     }
+    */
   }
 }

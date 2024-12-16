@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
 import { ChangeNoticeModalComponent } from './change-notice-modal/change-notice-modal.component';
@@ -15,8 +15,14 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   public noticeBoards: NoticeBoard[] = [];
+  public filteredNoticeBoards: NoticeBoard[] = [];
+  public searchQuery: string = '';
 
-  constructor(private noticeBoardService: NoticeBoardService, private dialog: MatDialog) { }
+  constructor(
+    private noticeBoardService: NoticeBoardService,
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     console.log('ngOnInit called');
@@ -27,13 +33,15 @@ export class AppComponent implements OnInit {
     this.noticeBoardService.getNoticeBoardsAll().subscribe(
       (result: NoticeBoard[]) => {
         this.noticeBoards = result;
+        this.filteredNoticeBoards = result;
+        this.cdr.detectChanges();
       },
       (error: any) => {
         console.error(error);
       }
     );
   }
- 
+
   openChangeNoticeModal(notice: NoticeBoard): void {
     const dialogRef = this.dialog.open(ChangeNoticeModalComponent, {
       data: notice
@@ -43,6 +51,8 @@ export class AppComponent implements OnInit {
       (result: NoticeBoard[]) => {
         if (result) {
           this.noticeBoards = result;
+          this.applyFilter(this.searchQuery);
+          this.cdr.detectChanges();
         }
       }
     );
@@ -55,6 +65,8 @@ export class AppComponent implements OnInit {
       (result: NoticeBoard[]) => {
         if (result) {
           this.noticeBoards = result;
+          this.applyFilter(this.searchQuery);
+          this.cdr.detectChanges();
         }
       }
     );
@@ -71,8 +83,29 @@ export class AppComponent implements OnInit {
       (result: boolean) => {
         if (result) {
           this.noticeBoards = this.noticeBoards.filter(notice => notice.id !== id);
+          this.applyFilter(this.searchQuery);
+          this.cdr.detectChanges();
         }
       }
     );
+  }
+
+  applyFilter(query: string) {
+    this.searchQuery = query;
+
+    if (query.length >= 3) {
+      this.filteredNoticeBoards = this.noticeBoards.filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || item.content.toLowerCase().includes(query.toLowerCase()));
+    } else {
+      this.filteredNoticeBoards = this.noticeBoards;
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      var searchSpan = (<HTMLInputElement>event.target).value;
+      this.applyFilter(searchSpan);
+    }
   }
 }

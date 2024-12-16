@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface NoticeBoard {
   id: number;
   title: string;
+  imageUrl: string;
   content: string;
   createDate: string;
   updateDate: string;
@@ -29,8 +30,8 @@ export class NoticeBoardService {
     return result;
   }
 
-  addNotice(item: NoticeBoard): Observable<NoticeBoard> {
-    return this.http.post<NoticeBoard>(this.baseUrl, item);
+  addNotice(formData: FormData): Observable<any> {
+    return this.http.post<NoticeBoard>(this.baseUrl, formData);
   }
 
   getNoticeBoardsAll(): Observable<NoticeBoard[]> {

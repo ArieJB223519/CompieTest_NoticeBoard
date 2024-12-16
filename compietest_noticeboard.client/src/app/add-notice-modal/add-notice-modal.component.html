@@ -12,6 +12,9 @@
       <textarea matInput formControlName="content"></textarea>
     </mat-form-field>
   </div>
+  <div>
+    <input type="file" (change)="onFileSelected($event)">
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>

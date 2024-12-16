@@ -8,51 +8,42 @@ namespace CompieTest_NoticeBoard.Server.Controllers
     public class NoticeBoardController : ControllerBase
     {
         private readonly ILogger<NoticeBoardController> _logger;
-        private readonly string _filePath = Path.Combine("Data", "noticeBoardItems.json");
+        private readonly IWebHostEnvironment _environment;
+        private readonly string _filePath = Path.Combine("Data", "noticeBoardItems.json"); 
 
-        public NoticeBoardController(ILogger<NoticeBoardController> logger)
+        public NoticeBoardController(ILogger<NoticeBoardController> logger, IWebHostEnvironment environment)
         {
             _logger = logger;
+            _environment = environment;
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            NoticeBoardItem[]? noticeBoardItemsArray = null;
-            NoticeBoardItems? noticeBoardItems = null;
-            NoticeBoardItem? existingItem = null;
-            string updatedJsonContent = string.Empty;
-
             try
             {
-                noticeBoardItems = await LoadNoticeBoardItemsAsync();
-
-                existingItem = noticeBoardItems.Items.FirstOrDefault(i => i.Id == id);
+                var noticeBoardItems = await LoadNoticeBoardItemsAsync();
+                var existingItem = noticeBoardItems.Items.FirstOrDefault(i => i.Id == id);
 
                 if (existingItem == null)
                 {
                     return NotFound("Item not found.");
                 }
 
+                DeleteImage(existingItem.ImageUrl);
+
                 noticeBoardItems.Items.Remove(existingItem);
 
-                updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);
-                await System.IO.File.WriteAllTextAsync(_filePath, updatedJsonContent);
+                await SaveNoticeBoardItemsAsync(noticeBoardItems);
 
-                noticeBoardItems = await LoadNoticeBoardItemsAsync();
-
-                if (noticeBoardItems != null && noticeBoardItems.Items != null)
-                {
-                    noticeBoardItemsArray = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
-                }
+                var noticeBoardItemsArray = GetSortedNoticeBoardItemsArray(noticeBoardItems);
+                return Ok(noticeBoardItemsArray);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Exception: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
-
-            return Ok(noticeBoardItemsArray ?? new NoticeBoardItem[0]);
         }
 
         [HttpPatch("{id}")]
@@ -92,20 +83,14 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 {
                     existingItem.Content = updatedItem.Content;
                 }
-                else if (updatedItem.UpdateDate != null)
-                {
-                    existingItem.UpdateDate = updatedItem.UpdateDate;
-                }
+                
+                existingItem.UpdateDate = updatedItem.UpdateDate;
 
-                updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);
-                await System.IO.File.WriteAllTextAsync(_filePath, updatedJsonContent);
+                await SaveNoticeBoardItemsAsync(noticeBoardItems);
 
                 noticeBoardItems = await LoadNoticeBoardItemsAsync();
 
-                if (noticeBoardItems != null && noticeBoardItems.Items != null)
-                {
-                    noticeBoardItemsArray = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
-                }
+                noticeBoardItemsArray = GetSortedNoticeBoardItemsArray(noticeBoardItems);
             }
             catch (JsonException ex)
             {
@@ -118,11 +103,11 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
 
-            return Ok(noticeBoardItemsArray ?? new NoticeBoardItem[0]);
+            return Ok(noticeBoardItemsArray ?? Array.Empty<NoticeBoardItem>());
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] NoticeBoardItem updatedItem)
+        public async Task<IActionResult> Put(int id, [FromBody] NoticeBoardItem updatedItem)
         {
             NoticeBoardItem[]? noticeBoardItemsArray = null;
             NoticeBoardItem? existingItem = null;
@@ -158,20 +143,14 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 {
                     existingItem.Content = updatedItem.Content;
                 }
-                else if (updatedItem.UpdateDate != null)
-                {
-                    existingItem.UpdateDate = updatedItem.UpdateDate;
-                }
+                
+                existingItem.UpdateDate = updatedItem.UpdateDate;
 
-                updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);
-                await System.IO.File.WriteAllTextAsync(_filePath, updatedJsonContent);
+                await SaveNoticeBoardItemsAsync(noticeBoardItems);
 
                 noticeBoardItems = await LoadNoticeBoardItemsAsync();
 
-                if (noticeBoardItems != null && noticeBoardItems.Items != null)
-                {
-                    noticeBoardItemsArray = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
-                }
+                noticeBoardItemsArray = GetSortedNoticeBoardItemsArray(noticeBoardItems);
             }
             catch (Exception ex)
             {
@@ -179,24 +158,48 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
 
-            return Ok(noticeBoardItemsArray ?? new NoticeBoardItem[0]);         
+            return Ok(noticeBoardItemsArray ?? Array.Empty<NoticeBoardItem>());         
         }
 
         [HttpPost(Name = "AddNoticeBoardItem")]
-        public async Task<IActionResult> Add([FromBody] NoticeBoardItem newItem)
+        public async Task<IActionResult> Post([FromForm] string title, [FromForm] string content, [FromForm] IFormFile image)
         {
             NoticeBoardItem[]? noticeBoardItemsArray = null;
             NoticeBoardItems? noticeBoardItems = null;
             string updatedJsonContent = string.Empty;
 
-            if (newItem == null)
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
             {
                 return BadRequest("Invalid item.");
             }
 
             try
             {
+                string imageUrl = string.Empty;
+
+                if (image != null)
+                {
+                    var uploadsPath = Path.Combine(_environment.WebRootPath, "images");
+                    var filePath = Path.Combine(uploadsPath, image.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+
+                    imageUrl = image.FileName;
+                }
+
                 noticeBoardItems = await LoadNoticeBoardItemsAsync();
+
+                var newItem = new NoticeBoardItem
+                {
+                    Title = title,
+                    Content = content,
+                    ImageUrl = imageUrl,
+                    CreateDate = DateTime.UtcNow,
+                    UpdateDate = DateTime.UtcNow
+                };
 
                 if (noticeBoardItems.Items.Any())
                 {
@@ -207,20 +210,13 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                     newItem.Id = 1;
                 }
 
-                newItem.CreateDate = DateTime.UtcNow;
-                newItem.UpdateDate = DateTime.UtcNow;
-
                 noticeBoardItems.Items.Add(newItem);
 
-                updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);
-                await System.IO.File.WriteAllTextAsync(_filePath, updatedJsonContent);
+                await SaveNoticeBoardItemsAsync(noticeBoardItems);
 
                 noticeBoardItems = await LoadNoticeBoardItemsAsync();
 
-                if (noticeBoardItems != null && noticeBoardItems.Items != null)
-                {
-                    noticeBoardItemsArray = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
-                }
+                noticeBoardItemsArray = GetSortedNoticeBoardItemsArray(noticeBoardItems);
             }
             catch (Exception ex)
             {
@@ -228,7 +224,7 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
 
-            return Ok(noticeBoardItemsArray ?? new NoticeBoardItem[0]);
+            return Ok(noticeBoardItemsArray ?? Array.Empty<NoticeBoardItem>());
         }
 
         [HttpGet(Name = "GetNoticeBoard")]
@@ -243,7 +239,7 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 
                 if (noticeBoardItems != null && noticeBoardItems.Items != null)
                 {
-                    noticeBoardItemsArray = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
+                    noticeBoardItemsArray = GetSortedNoticeBoardItemsArray(noticeBoardItems);
                 }
             }
             catch (Exception ex)
@@ -253,6 +249,20 @@ namespace CompieTest_NoticeBoard.Server.Controllers
             }
 
             return Ok(noticeBoardItemsArray ?? new NoticeBoardItem[0]);
+        }
+
+        //Private Methods =========================================================
+
+        private NoticeBoardItem[] GetSortedNoticeBoardItemsArray(NoticeBoardItems? noticeBoardItems)
+        {
+            NoticeBoardItem[] result = [];
+
+            if (noticeBoardItems != null && noticeBoardItems.Items != null)
+            {
+                result = noticeBoardItems.Items.OrderByDescending(item => item.CreateDate).ToArray();
+            }
+
+            return result;
         }
 
         private async Task<NoticeBoardItems> LoadNoticeBoardItemsAsync()
@@ -280,6 +290,28 @@ namespace CompieTest_NoticeBoard.Server.Controllers
                 _logger.LogError($"Exception: {ex.Message}");
                 throw new Exception("Internal server error", ex);
             }
+        }
+
+        private void DeleteImage(string imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return;
+            }
+                
+            var uploadsPath = Path.Combine(_environment.WebRootPath, "images");
+            var filePath = Path.Combine(uploadsPath, imageUrl);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+        }
+
+        private async Task SaveNoticeBoardItemsAsync(NoticeBoardItems noticeBoardItems)
+        {
+            var updatedJsonContent = JsonConvert.SerializeObject(noticeBoardItems, Formatting.Indented);
+            await System.IO.File.WriteAllTextAsync(_filePath, updatedJsonContent);
         }
     }
 }
