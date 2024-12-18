@@ -1,0 +1,12 @@
+.file-input {
+  display: none;
+}
+
+.full-width {
+  width: 100%;
+  display: block;
+}
+
+.file-upload button {
+  margin-bottom: 15px;
+}

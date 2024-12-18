@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddNoticeModalComponent } from './add-notice-modal/add-notice-modal.component';
+import { AddNoticeModalComponent } from './add-notice-modal/AddNoticeModalComponent';
 import { ChangeNoticeModalComponent } from './change-notice-modal/change-notice-modal.component';
 import { DeleteNoticeConfirmComponent } from './delete-notice-confirm/delete-notice-confirm.component';
 import { NoticeBoardService, NoticeBoard } from './notice-board.service';

@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class AddNoticeModalComponent {
   noticeBoardForm: FormGroup;
   selectedFile: File | null = null;
-  selectedFileName: string | null = null; 
+  selectedFileName: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -47,10 +47,10 @@ export class AddNoticeModalComponent {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.selectedFileName = file.name; 
+      this.selectedFileName = file.name;
     } else {
       this.selectedFile = null;
-      this.selectedFileName = null; 
+      this.selectedFileName = null;
     }
   }
 
