@@ -17,7 +17,9 @@
         <div class="imageUrl" *ngIf="noticeBoard.imageUrl">
           <img [src]="'https://localhost:7225/images/' + noticeBoard.imageUrl" [alt]="'image for ' + noticeBoard.title" />
         </div>
-        <div class="content">{{ noticeBoard.content }}</div>
+        <div class="contentGradient">
+          <div class="content">{{ noticeBoard.content }}</div>
+        </div>
         <div class="create-date">Created: {{ noticeBoard.createDate | date:'dd.MM.yy HH:mm' }}</div>
         <div class="update-date">Updated: {{ noticeBoard.updateDate | date:'dd.MM.yy HH:mm' }}</div>
       </div>

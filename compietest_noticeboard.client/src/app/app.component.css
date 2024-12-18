@@ -7,13 +7,13 @@
 .searchNotices input:focus {
   outline: none;
   box-shadow: none;
-  border-color: initial; 
+  border-color: initial;
 }
 
-.content {
+/*.content {
   overflow-y: auto;
   max-height: 80px;
-}
+}*/
 
 .searchNotices input {
   width: 70%;
@@ -132,19 +132,37 @@
   box-sizing: border-box;
 }
 
-  .notice-board-item .title {
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 17px;
-    color: #777777;
-    margin-bottom: 3px;
+.notice-board-item .title {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 17px;
+  color: #777777;
+  margin-bottom: 3px;
+}
+
+  .notice-board-item .contentGradient {
+    position: relative;
+    width: 100%;
   }
 
-  .notice-board-item .content {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    border-bottom: 1px dashed #777;
-  }
+    .notice-board-item .contentGradient::after {
+      content: "";
+      position: absolute;
+      bottom: 1px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: linear-gradient(transparent, white);
+      pointer-events: none;
+    }
+
+    .notice-board-item .contentGradient .content {
+      margin-top: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed #777;
+      overflow-y: auto;
+      max-height: 80px;
+    }
 
   .notice-board-item .create-date,
   .notice-board-item .update-date {
